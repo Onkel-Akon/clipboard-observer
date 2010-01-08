@@ -1,4 +1,4 @@
-#summary Software is ready to work for anybody.
+#summary Software is ready to work for everybody.
 
 = Introduction =
 
