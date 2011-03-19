@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.*;
+import java.net.URL;
 
 /**
  * TODO create some description
@@ -29,7 +30,7 @@ public class ClipboardBase64 {
     }
 
     public void setPut(boolean put) {
-        System.out.println("auto put="+put);
+        System.out.println("auto put=" + put);
         this.put = put;
     }
 
@@ -120,7 +121,7 @@ public class ClipboardBase64 {
     private boolean put = true;
 
     public void setEnabled(boolean enable) {
-        System.out.println("enable="+enable);
+        System.out.println("enable=" + enable);
         if ((enable && (runner == null || !runner.running)) || (!enable && runner != null && runner.running)) {
             if (runner != null) runner.running = false;
             if (enable) runner = new EThread(this);
@@ -170,7 +171,15 @@ public class ClipboardBase64 {
                     }
                     sb.append(')');
                     s = sb.toString();
+                } else if (type.startsWith("application/x-java-file-list") && java.util.List.class.isAssignableFrom(aClass)) {
+                    Transferable t = clipboard.getContents(null);
+                    java.util.List<File> files = (java.util.List<File>) t.getTransferData(flavor);
+                    for (File file : files) {
+                        s = processFile(file);
+                        if (s != null) break;
+                    }
                 }
+                if (s != null) break;
             }
             if (s != null) {
                 if (text != null) text.setText(s);
@@ -182,6 +191,27 @@ public class ClipboardBase64 {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String processFile(File file) throws IOException {
+        if (file.getName().endsWith(".png")) {
+            String s;
+            FileInputStream is = new FileInputStream(file);
+            int available = is.available();
+            StringBuilder sb = new StringBuilder(available * 2 + 27);
+            sb.append("url(data:image/png;base64,");
+            while (available > 0) {
+                byte[] a = new byte[available];
+                available = is.read(a);
+                char[] chars = encode(a, available);
+                sb.append(chars);
+                available = is.available();
+            }
+            sb.append(')');
+            s = sb.toString();
+            return s;
         }
         return null;
     }
