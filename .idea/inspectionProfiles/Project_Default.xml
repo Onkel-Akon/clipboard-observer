@@ -2,7 +2,7 @@
   <profile version="1.0" is_locked="false">
     <option name="myName" value="Project Default" />
     <option name="myLocal" value="false" />
-    <inspection_tool class="HtmlUnknownAttribute" level="WARNING" enabled="true">
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
           <list size="6">
@@ -17,7 +17,7 @@
       </option>
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
-    <inspection_tool class="RequiredAttributes" level="WARNING" enabled="true">
+    <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myAdditionalRequiredHtmlAttributes" value="type" />
     </inspection_tool>
   </profile>
